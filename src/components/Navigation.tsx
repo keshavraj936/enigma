@@ -1,12 +1,47 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import enigmaLogo from "@/assets/Logo_Updated.png";
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLogoOpen, setIsLogoOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isHomePage = location.pathname === "/";
+
+  // Handles nav clicks: if on home page, scroll directly; if on another page, navigate to / then scroll
+  const handleNavClick = (e: React.MouseEvent, hash: string) => {
+    e.preventDefault();
+    const sectionId = hash.replace("#", "");
+
+    if (isHomePage) {
+      // Already on home — just scroll to the section
+      const el = document.getElementById(sectionId);
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    } else {
+      // Navigate to home first, then scroll after page renders
+      navigate("/");
+      // Wait for home page to mount, then scroll
+      setTimeout(() => {
+        const el = document.getElementById(sectionId);
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    }
+  };
+
+  useEffect(() => {
+    // After navigating to /, check if there's a pending hash to scroll to
+    if (isHomePage && location.hash) {
+      const sectionId = location.hash.replace("#", "");
+      setTimeout(() => {
+        const el = document.getElementById(sectionId);
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    }
+  }, [location, isHomePage]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -50,12 +85,20 @@ const Navigation = () => {
                   <a
                     key={link.name}
                     href={link.href}
+                    onClick={(e) => handleNavClick(e, link.href)}
                     className="group relative font-code text-[11px] font-bold text-white/60 hover:text-primary transition-colors tracking-widest uppercase"
                   >
                     {link.name}
                     <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-primary transition-all group-hover:w-full" />
                   </a>
                 ))}
+                <Link
+                  to="/notes"
+                  className="group relative font-code text-[11px] font-bold text-primary hover:text-white transition-colors tracking-widest uppercase"
+                >
+                  NOTES.LIB
+                  <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-primary transition-all group-hover:w-full" />
+                </Link>
               </div>
             </div>
 
@@ -82,12 +125,19 @@ const Navigation = () => {
                   <a
                     key={link.name}
                     href={link.href}
+                    onClick={(e) => { handleNavClick(e, link.href); setIsMobileMenuOpen(false); }}
                     className="text-4xl font-black font-poppins tracking-tighter text-white hover:text-primary transition-colors"
-                    onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {link.name}
                   </a>
                 ))}
+                <Link
+                  to="/notes"
+                  className="text-4xl font-black font-poppins tracking-tighter text-primary hover:text-white transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  NOTES.LIB
+                </Link>
               </div>
 
               <div className="absolute bottom-12 left-6 opacity-10">
