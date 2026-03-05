@@ -185,3 +185,15 @@
     animation: pulseGlow 2s ease-in-out infinite;
   }
 }
+
+/* Hide Botpress default chat bubble — using custom button instead */
+#bp-web-widget,
+.bpFab,
+[class*="bpFab"],
+[id*="bp-web-widget"],
+[class*="bpw-floating-button"],
+[class*="webchat-widget-btn"],
+iframe[id*="botpress"],
+div[id*="botpress-webchat"] {
+  display: none !important;
+}
