@@ -66,3 +66,44 @@ Access these via CSS variables in `index.css`.
 - **CSS Files:** Use `tailwind.config.ts` for theme tokens and `index.css` for custom animations/grain.
 - **Accessibility:** `prefers-reduced-motion` is mandatory for the grain and reveal animations.
 - **Performance:** Use GPU-accelerated transforms and opacity only.
+
+---
+
+## 🤖 Chatbot: Botpress Webchat v3.6 — Acid Brutalism Skin
+
+**File:** `src/chatbot.css` — imported in `main.tsx`
+
+### Integration
+- **Trigger:** Custom element (`id="bp-toggle-chat"`) — our existing `HelpCircle` floating button
+- **Mode:** Toggle (overlay, not embedded)
+- **Botpress default bubble:** Hidden via CSS (no duplicate launcher)
+
+### CSS Architecture
+
+| Section | Description |
+| :--- | :--- |
+| CSS Variables (`--bp-*`) | Override Botpress root tokens for color, radius, font |
+| Widget Container | `1px` acid border + 40px glow, `0px` radius |
+| Header | Full `#D5FF40` bar, `#080808` text, all-caps, `font-weight: 800` |
+| Bot Messages | `#121212` surface, `1px #D5FF4033` border, white text |
+| User Messages | Solid `#D5FF40`, `#080808` text, `font-weight: 600` |
+| Input Field | `#121212` bg, acid border on focus + glow pulse |
+| Send Button | `#D5FF40` → hover glow `box-shadow: 0 0 16px rgba(213,255,64,0.5)` |
+| Quick Replies | Outlined ghost buttons → fill on hover |
+| Scrollbar | 3px, `#D5FF4044` thumb |
+| Timestamps | `#555555`, uppercase, 0.65rem, letter-spaced |
+| Typing Indicator | `#121212` bg, acid dot pulse |
+| Links | `#D5FF40` underline → glow on hover |
+| Reduced Motion | All transitions/animations disabled via `prefers-reduced-motion` |
+
+### Token Reference
+
+```css
+--bp-color-primary:       #D5FF40   /* Acid Green — CTA, buttons, borders */
+--bp-color-background:    #080808   /* Deep Black canvas */
+--bp-color-surface:       #121212   /* Elevated cards / message bg */
+--bp-color-text:          #ffffff   /* High-contrast white */
+--bp-color-text-secondary: #C0C2B8  /* Muted subtext */
+--bp-border-radius:       0px       /* Brutalist — no rounding */
+--bp-font-family:         'Poppins', sans-serif
+```
